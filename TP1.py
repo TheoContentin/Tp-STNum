@@ -14,9 +14,19 @@ tableau8[7] = 1-tableau8.sum(1)
 print(tableau8.std(0))
 
 
+#Q2 Voila
 
 plt.subplots(figsize=(8, 6))
 
 tableau8.boxplot()
 plt.show()
+
+
+
+#Q3 : Wow !
+
+plt.subplots(figsize=(10, 10))
+pd.plotting.scatter_matrix(tableau8, figsize=(15,10))
+plt.show()
+
 
