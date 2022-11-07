@@ -78,4 +78,11 @@ ax.set_title('Cercle de corrélations')
 plt.axhline(y=0)
 plt.axvline(x=0)
 
+
+#q8
+
+plt.figure()
+plt.scatter(np.dot(tableau8[:40],cor_var[0]),np.dot(tableau8[:40],cor_var[1]), color = 'RED',label="Rembrandt")
+plt.scatter(np.dot(tableau8[40:],cor_var[0]),np.dot(tableau8[40:],cor_var[1]), color = 'BLUE',label="Van Gogh")
+plt.legend()
 plt.show()
