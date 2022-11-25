@@ -56,3 +56,47 @@ plt.grid()
 
 plt.legend()
 plt.show()
+
+
+theta = 4
+n=500
+N = 200
+les_biais1,les_biais2,les_biais3=[],[],[]
+les_var1,les_var2,les_var3=[],[],[]
+
+for i in range(1,n+1):
+    Xuniform = np.random.uniform(0, 8, i)
+    for j in range(1,N+1):
+        les_theta1, les_theta2, les_theta3 = [], [], []
+
+        les_theta1.append(theta1(Xuniform))
+        les_theta2.append(theta2(Xuniform))
+        les_theta3.append(theta3(Xuniform))
+
+    les_biais1.append(np.mean(les_theta1)-theta)
+    les_biais2.append(np.mean(les_theta2)-theta)
+    les_biais3.append(np.mean(les_theta3)-theta)
+
+    les_var1.append(np.var(les_theta1))
+    les_var2.append(np.var(les_theta2))
+    les_var3.append(np.var(les_theta3))
+
+fig=plt.figure()
+plt.plot(les_biais1,label='theta1')
+plt.plot(les_biais2,label='theta2')
+plt.plot(les_biais3,label='theta3')
+plt.title(r"$biais(\hat{\theta}(n))$ pour une loi uniforme $\mathcal{U}(0,8)$")
+plt.xlabel("n")
+plt.ylabel(r"$\hat{\theta}$")
+plt.legend()
+plt.show()
+
+fig1=plt.figure()
+plt.plot(les_var1,label='theta1')
+plt.plot(les_var2,label='theta2')
+plt.plot(les_var3,label='theta3')
+plt.title(r"$var(\hat{\theta}(n))$ pour une loi uniforme $\mathcal{U}(0,8)$")
+plt.xlabel("n")
+plt.ylabel(r"$\hat{\theta}$")
+plt.legend()
+plt.show()
