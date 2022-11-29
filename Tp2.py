@@ -12,6 +12,7 @@ def theta2(x):
 def theta3(x):
     return (np.min(x)+np.max(x))/2
 
+#### 1.1 ####
 Xnormal = np.random.normal(theta[0],theta[1],(500,200))
 
 Xnormal_1 = np.zeros_like(Xnormal)
@@ -132,7 +133,6 @@ plt.title(r"$biais(\hat{\theta}(n))$ pour une loi uniforme $\mathcal{U}(0,8)$")
 plt.xlabel("n")
 plt.ylabel(r"$\hat{\theta}$")
 plt.legend()
-plt.show()
 
 fig1=plt.figure()
 plt.plot(les_var1,label='theta1')
@@ -143,3 +143,5 @@ plt.xlabel("n")
 plt.ylabel(r"$\hat{\theta}$")
 plt.legend()
 plt.show()
+
+#### 2 ####
