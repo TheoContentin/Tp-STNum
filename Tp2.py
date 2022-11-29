@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd # Pour lire les fichiers
+
 
 theta = [5,4]
 
@@ -41,7 +43,7 @@ bias_normal_3 = np.mean(Xnormal_3-theta[0],1)
 
 print(bias_normal_1[499],bias_normal_2[499],bias_normal_3[499])
 
-fig = plt.figure()
+fig1 = plt.figure()
 
 plt.plot(bias_normal_3,label=r"$\hat{\theta}_3$")
 plt.plot(bias_normal_1,label=r"$\hat{\theta}_1$")
@@ -62,7 +64,7 @@ var_normal_3 = np.var(Xnormal_3,1)
 
 print(var_normal_1[499],var_normal_2[499],var_normal_3[499])
 
-fig = plt.figure()
+fig2 = plt.figure()
 
 plt.plot(var_normal_3,label=r"$\hat{\theta}_3$")
 plt.plot(var_normal_1,label=r"$\hat{\theta}_1$")
@@ -99,7 +101,6 @@ plt.legend()
 plt.grid()
 
 plt.legend()
-plt.show()
 
 
 theta = 4
@@ -145,3 +146,16 @@ plt.legend()
 plt.show()
 
 #### 2 ####
+
+poulpefem = pd.read_table("poulpe1.txt",
+                        sep=";",
+                        decimal=".")
+print(poulpefem)
+
+def varnb(x):
+    return np.sum((x-np.mean(x,0))**2)/(np.shape(x)[0]-1)
+
+mu = theta1(poulpefem["poids"])
+sigsquarred = varnb(poulpefem["poids"])
+
+print("Moyenne :",mu,  "Variance :", sigsquarred, "Ecart type: ", np.sqrt(sigsquarred))
