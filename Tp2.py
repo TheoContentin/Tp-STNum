@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd # Pour lire les fichiers
+
 
 theta = [5,4]
 
@@ -98,7 +100,6 @@ plt.legend()
 plt.grid()
 
 plt.legend()
-plt.show()
 
 
 theta = 4
@@ -132,7 +133,6 @@ plt.title(r"$biais(\hat{\theta}(n))$ pour une loi uniforme $\mathcal{U}(0,8)$")
 plt.xlabel("n")
 plt.ylabel(r"$\hat{\theta}$")
 plt.legend()
-plt.show()
 
 fig1=plt.figure()
 plt.plot(les_var1,label='theta1')
@@ -143,3 +143,21 @@ plt.xlabel("n")
 plt.ylabel(r"$\hat{\theta}$")
 plt.legend()
 plt.show()
+
+
+poulpefem = pd.read_table("poulpe1.txt",
+                        sep=";",
+                        decimal=".")
+print(poulpefem)
+
+def varnb(x):
+    return np.sum((x-np.mean(x,0))**2)/(np.shape(x)[0]-1)
+
+mu = theta1(poulpefem["poids"])
+sigsquarred = varnb(poulpefem["poids"])
+
+print("Moyenne :",mu,  "Variance :", sigsquarred, "Ecart type: ", np.sqrt(sigsquarred))
+
+
+
+
