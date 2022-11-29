@@ -177,3 +177,9 @@ print('90% :',IC(poulpefem["poids"],0.9),'\n','95% :',IC(poulpefem["poids"],0.95
 poulpes = pd.read_table("poulpe2.txt",
                         sep=";",
                         decimal=".")
+
+poulpes_f = poulpes[poulpes["sexe"] == "femelle"]
+poulpes_m = poulpes[poulpes["sexe"] == "male"]
+
+
+print(poulpes_f,poulpes_m)
