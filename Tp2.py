@@ -178,9 +178,10 @@ poulpes = pd.read_table("poulpe2.txt",
                         sep=";",
                         decimal=".")
 
-poulpes_f = poulpes[poulpes["sexe"] == "femelle"]
-poulpes_m = poulpes[poulpes["sexe"] == "male"]
+poulpes_f = poulpes[poulpes["sexe"] == "femelle"]['poids']
+poulpes_m = poulpes[poulpes["sexe"] == "male"]['poids']
 
+## Test de l'hypothèse d'égalité des variances des deux échantillons à l'aide d'un test de Fisher ##
 n_poulpes_f = len(poulpes_f)
 sigma2_estim_poulpes_f = poulpes_f.var()
 
@@ -189,4 +190,17 @@ sigma2_estim_poulpes_m = poulpes_m.var()
 
 stat = sigma2_estim_poulpes_f/sigma2_estim_poulpes_m
 pval = 2*min((1-scy.f.cdf(stat, dfn=n_poulpes_f-1, dfd=n_poulpes_m-1)), scy.f.cdf(stat, dfn=n_poulpes_f-1, dfd=n_poulpes_m-1))
-print("p-valeur : {:^.3f}".format(float(pval)))
+print("p-valeur_Fisher : {:^.3f}".format(float(pval)))
+
+## Test de l'hypothèse d'égalité des variances des deux échantillons à l'aide d'un test de Levene ##
+stat, pval = scy.levene(poulpes_f, poulpes_m)
+print("p-valeur_Levene : {:^.3f}".format(float(pval)))
+
+## Test de l'hypothèse d'égalité des moyennes des deux échantillons à l'aide d'un test de Student ##
+stat_student, pval = scy.ttest_ind(poulpes_f, poulpes_m, alternative='two-sided')
+print("p-valeur_Student : {:^.3f}".format(float(pval)))
+
+## Test de l'hypothèse d'égalité des moyennes des deux échantillons à l'aide d'un test de Mann-Whitney ##
+stat_Mann_whitney, pval = scy.mannwhitneyu(poulpes_f, poulpes_m, alternative='two-sided')
+print("p-valeur_Mann_Whitney : {:^.3f}".format(float(pval)))
+
