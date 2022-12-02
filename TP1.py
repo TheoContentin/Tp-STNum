@@ -88,7 +88,7 @@ plt.figure()
 plt.scatter(coord[:40,0],coord[:40,1], color = 'RED',label="Rembrandt")
 plt.scatter(coord[40:,0],coord[40:,1], color = 'BLUE',label="Van Gogh")
 plt.legend()
-plt.show()
+
 
 tableau64 = pd.read_table("painting64.txt",
                         sep=";",
@@ -205,7 +205,7 @@ plt.figure()
 plt.scatter(coord[:40,0],coord[:40,1], color = 'RED',label="Rembrandt")
 plt.scatter(coord[40:,0],coord[40:,1], color = 'BLUE',label="Van Gogh")
 plt.legend()
-plt.show()
+
 
 def plot_dendrogram(model, **kwargs):
     # Create linkage matrix and then plot the dendrogram
@@ -232,15 +232,136 @@ def plot_dendrogram(model, **kwargs):
 cah_single = AgglomerativeClustering(distance_threshold=0,
                                      affinity='euclidean',
                                      linkage='single',
-                                     n_clusters=None).fit(tableau64)
+                                     n_clusters=None).fit(norm.fit_transform(tableau8))
 
 
 
 
 plt.subplots(figsize=(10, 6))
 
-plt.title("Single linkage")
+plt.title("Single linkage: Normalized")
 # plot the top three levels of the dendrogram
-plot_dendrogram(cah_single, truncate_mode="level", p=10)
-plt.show()
+plot_dendrogram(cah_single, truncate_mode="level", p=84)
 
+
+
+cah_single = AgglomerativeClustering(distance_threshold=0,
+                                     affinity='euclidean',
+                                     linkage='average',
+                                     n_clusters=None).fit(norm.fit_transform(tableau8))
+
+
+
+
+plt.subplots(figsize=(10, 6))
+
+plt.title("average lainage: Normalized")
+# plot the top three levels of the dendrogram
+plot_dendrogram(cah_single, truncate_mode="level", p=84)
+
+
+cah_single = AgglomerativeClustering(distance_threshold=0,
+                                     affinity='euclidean',
+                                     linkage='average',
+                                     n_clusters=None).fit(tableau8)
+
+
+
+
+plt.subplots(figsize=(10, 6))
+
+plt.title("average lainage: Normalized")
+# plot the top three levels of the dendrogram
+plot_dendrogram(cah_single, truncate_mode="level", p=84)
+
+
+cah_single = AgglomerativeClustering(distance_threshold=0,
+                                     affinity='euclidean',
+                                     linkage='complete',
+                                     n_clusters=None).fit(norm.fit_transform(tableau8))
+
+
+
+
+plt.subplots(figsize=(10, 6))
+
+plt.title("Complete linkage: Normalized")
+# plot the top three levels of the dendrogram
+plot_dendrogram(cah_single, truncate_mode="level", p=84)
+
+
+cah_single = AgglomerativeClustering(distance_threshold=0,
+                                     affinity='euclidean',
+                                     linkage='complete',
+                                     n_clusters=None).fit(tableau8)
+
+
+
+
+plt.subplots(figsize=(10, 6))
+
+plt.title("complete linkage: not Normalized")
+# plot the top three levels of the dendrogram
+plot_dendrogram(cah_single, truncate_mode="level", p=84)
+
+
+
+
+
+kmeans = KMeans(init='k-means++',
+                max_iter=300,
+                n_clusters=2,
+                n_init=20).fit(tableau8)
+
+tableau8['Classes_Kmeans'] = kmeans.labels_
+
+tableau8.sort_values('Classes_Kmeans')['Classes_Kmeans']
+
+
+n = tableau8.shape[0]
+p = tableau8.shape[1]
+n_cp = p
+norm = StandardScaler()
+tableau8_acp_norm = norm.fit_transform(tableau8)
+acp=decomposition.PCA(svd_solver='full', n_components=tableau8.shape[1])
+coord = acp.fit_transform(tableau8_acp_norm)
+
+def markerchoie(m):
+    s = ""
+    for n in m:
+        if n == 0:
+            s = s+ 'v'
+        if n == 1:
+            s = s+ 's'
+
+plt.figure()
+for i in range(0,40):
+    if tableau8['Classes_Kmeans'][i] == 0:
+        plt.scatter(coord[i, 0], coord[i, 1], color='RED',
+                    marker='v')
+    else:
+        plt.scatter(coord[i, 0], coord[i, 1], color='RED',
+                    marker='s')
+
+for i in range(40,84):
+    if tableau8['Classes_Kmeans'][i] == 0:
+        plt.scatter(coord[i, 0], coord[i, 1], color='BLUE',
+                    marker='v')
+    else:
+        plt.scatter(coord[i, 0], coord[i, 1], color='BLUE',
+                    marker='s')
+
+
+from matplotlib.lines import Line2D
+legend_elements = [Line2D([0], [0], marker='o', color='b', label='VanGogh',
+                          markerfacecolor='b',linewidth=0),
+Line2D([0], [0], marker='o', color='r', label='Rembrandt',
+                          markerfacecolor='r',linewidth=0),
+Line2D([0], [0], marker='v', color='BLACK', label='Cluster 1 ',
+                          markerfacecolor='w',linewidth=0),
+Line2D([0], [0], marker='s', color='BLACK', label='Cluster 2 ',
+                          markerfacecolor='w',linewidth=0)]
+
+
+plt.legend(handles=legend_elements)
+plt.show()
