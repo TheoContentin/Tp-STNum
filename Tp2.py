@@ -190,3 +190,12 @@ sigma2_estim_poulpes_m = poulpes_m.var()
 stat = sigma2_estim_poulpes_f/sigma2_estim_poulpes_m
 pval = 2*min((1-scy.f.cdf(stat, dfn=n_poulpes_f-1, dfd=n_poulpes_m-1)), scy.f.cdf(stat, dfn=n_poulpes_f-1, dfd=n_poulpes_m-1))
 print("p-valeur : {:^.3f}".format(float(pval)))
+
+
+naissances = np.array([564772,629408,609596,604812,605280,450840,404456])
+
+p0 = np.ones(7)*np.sum(naissances)/7
+
+stat, pval = scy.chisquare(naissances,p0)
+
+print(pval)
