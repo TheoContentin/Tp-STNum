@@ -44,7 +44,7 @@ plt.ylabel('Histogramme')
 plt.title('Régression linéaire simple')
 
 ## Q3 ##
-plt.subplots(figsize=(8, 6))
+plt.subplots()
 plt.scatter(cars['speed'], cars['dist'])
 plt.plot(cars['speed'], reglin_sim.fittedvalues, color='red', label='Droite de régression')
 plt.xlabel('vitesse')
@@ -52,6 +52,17 @@ plt.ylabel('distance')
 plt.title('Régression linéaire simple')
 plt.grid()
 plt.legend()
+
+cars['dist_ajust'] = reglin_sim.fittedvalues
+bissec = np.linspace(cars['dist'].min(),cars['dist'].max(),5)
+
+plt.subplots()
+plt.scatter(cars['dist'], cars['dist_ajust'])
+plt.plot(bissec, bissec, linestyle='dashed', lw=2, color='blue')
+plt.grid()
+plt.xlabel('distance')
+plt.ylabel('distance ajustée')
+plt.title('Régression linéaire simple')
 # plt.show()
 
 ## Q4 ##
@@ -73,3 +84,7 @@ state = pd.read_table("state.txt",
                         decimal=".")
 
 ## Q5 ##
+reglin_multi_model = ols('Life_Exp ~ Population + Income + Illiteracy + Murder + HS_Grad + Frost + Area', data = state)
+reglin_multi = reglin_multi_model.fit()
+print(reglin_multi.summary())
+
