@@ -157,5 +157,45 @@ X = add_constant(state[['Murder', 'HS_Grad', 'Frost']])
 VIF = pd.DataFrame()
 VIF['Variables'] = X.columns
 VIF['VIF'] = [variance_inflation_factor(X.values, i) for i in range(len(X.columns))]
-print(VIF[1:len(X.columns)]) # pas de problèmes de colinéarité : tous les VIF sont inférieurs à 10
+# print(VIF[1:len(X.columns)]) # pas de problèmes de colinéarité : tous les VIF sont inférieurs à 10
+
+## Q10 ##
+from sklearn.linear_model import LinearRegression # Pour la régression linéaire
+from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error # Pour les critères d'erreur
+
+X = state[['Murder', 'HS_Grad', 'Frost']]
+y = state['Life_Exp']
+
+apprent = np.random.binomial(n=1, p=0.2, size=state.shape[0])
+
+X_train = X[apprent == 0]
+y_train = y[apprent == 0]
+
+X_test = X[apprent == 1]
+y_test = y[apprent == 1]
+
+reg = LinearRegression().fit(X_train, y_train)
+
+RMSE = np.sqrt(mean_squared_error(y_test, reg.predict(X_test)))
+print(f'RMSE : {RMSE:.2f}')
+
+MAPE = mean_absolute_percentage_error(y_test, reg.predict(X_test)) * 100
+print(f'MAPE (%): {MAPE:.2f}')
+
+## Q11 ##
+apprent2 = np.random.binomial(n=1, p=0.2, size=state.shape[0])
+
+X_train2 = X[apprent2 == 0]
+y_train2 = y[apprent2 == 0]
+
+X_test2 = X[apprent2 == 1]
+y_test2 = y[apprent2 == 1]
+
+reg2 = LinearRegression().fit(X_train2, y_train2)
+
+RMSE2 = np.sqrt(mean_squared_error(y_test2, reg2.predict(X_test2)))
+print(f'RMSE autre échantillon: {RMSE2:.2f}')
+
+MAPE2 = mean_absolute_percentage_error(y_test2, reg2.predict(X_test2)) * 100
+print(f'MAPE autre échantillon (%): {MAPE2:.2f}')
 
