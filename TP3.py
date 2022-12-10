@@ -71,12 +71,12 @@ beta=3.9324
 def prevision(vit):
     return alpha+beta*vit
 
-print('prévision de la distance d arrêt pour une vitesse de O mph : '+str(prevision(0))+' m \n')
-print('prévision de la distance d arrêt pour une vitesse de 40 mph : '+str(prevision(40))+' m \n')
+# print('prévision de la distance d arrêt pour une vitesse de O mph : '+str(prevision(0))+' m \n')
+# print('prévision de la distance d arrêt pour une vitesse de 40 mph : '+str(prevision(40))+' m \n')
 
 a_prevoir = pd.DataFrame({'speed': [40]})
 prev = reglin_sim.predict(a_prevoir)
-print(f'Valeur prévue : {prev[0]:.2f}')
+# print(f'Valeur prévue : {prev[0]:.2f}')
 
 #### 2 ####
 state = pd.read_table("state.txt",
@@ -87,4 +87,26 @@ state = pd.read_table("state.txt",
 reglin_multi_model = ols('Life_Exp ~ Population + Income + Illiteracy + Murder + HS_Grad + Frost + Area', data = state)
 reglin_multi = reglin_multi_model.fit()
 print(reglin_multi.summary())
+
+# Area est la moins significative : on l'a retire
+reglin_multi_model = ols('Life_Exp ~ Population + Income + Illiteracy + Murder + HS_Grad + Frost', data = state)
+reglin_multi = reglin_multi_model.fit()
+print(reglin_multi.summary())
+
+# Illiteracy est la moins significative : on l'a retire
+reglin_multi_model = ols('Life_Exp ~ Population + Income + Murder + HS_Grad + Frost', data = state)
+reglin_multi = reglin_multi_model.fit()
+print(reglin_multi.summary())
+
+# Income est la moins significative : on l'a retire
+reglin_multi_model = ols('Life_Exp ~ Population + Murder + HS_Grad + Frost', data = state)
+reglin_multi = reglin_multi_model.fit()
+print(reglin_multi.summary())
+
+# On peut peut-être retirer Population qui reste au-dessus de 0.05
+reglin_multi_model = ols('Life_Exp ~ Murder + HS_Grad + Frost', data = state)
+reglin_multi = reglin_multi_model.fit()
+print(reglin_multi.summary())
+
+# On ne retire plus rien
 
