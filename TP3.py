@@ -124,10 +124,10 @@ plt.ylabel('Life_Exp ajusté')
 state['residu'] = reglin_multi.resid
 
 moy_res = state.residu.mean()
-print(f'Moyenne des résidus : {moy_res:.2f}')
+# print(f'Moyenne des résidus : {moy_res:.2f}')
 
 var_res = state.residu.var()
-print(f'Variance des résidus : {var_res:.2f}')
+# print(f'Variance des résidus : {var_res:.2f}')
 
 plt.subplots()
 plt.boxplot(state['residu'], labels=['Boîte à moustaches'])
@@ -146,6 +146,16 @@ plt.title('Régression linéaire multiple')
 # Prévision
 a_prevoir = pd.DataFrame({'Murder': [0], 'HS_Grad': [80], 'Frost': [0]})
 prev = reglin_multi.predict(a_prevoir)
-print(f'Esperence de vie prevue pour Murder=0, HS_Grad=80 et Frost=0 : {prev[0]:.2f} ans')
+# print(f'Esperence de vie prevue pour Murder=0, HS_Grad=80 et Frost=0 : {prev[0]:.2f} ans')
 
 ## Q8 ##
+from statsmodels.stats.outliers_influence import variance_inflation_factor # Pour les VIF
+from statsmodels.tools.tools import add_constant # Pour ajouter la constante (calcul de VIF)
+
+X = add_constant(state[['Murder', 'HS_Grad', 'Frost']])
+
+VIF = pd.DataFrame()
+VIF['Variables'] = X.columns
+VIF['VIF'] = [variance_inflation_factor(X.values, i) for i in range(len(X.columns))]
+print(VIF[1:len(X.columns)]) # pas de problèmes de colinéarité : tous les VIF sont inférieurs à 10
+
